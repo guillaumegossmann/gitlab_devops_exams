@@ -8,8 +8,8 @@ imagePullSecrets:
   - name: regcred
 
 service:
-  type: ClusterIP
-  port: 8000
+  type: NodePort
+  port: 80
 
 env:
   USERS_SERVICE_URL: http://users-service:8000
