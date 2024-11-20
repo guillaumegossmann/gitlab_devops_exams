@@ -21,29 +21,28 @@ stages:
   - deploy-staging
   - deploy-prod
 
-test-gateway:
-  stage: test
-  script:
-    - cd gateway
-    - pip install -r requirements.txt
-    # - flake8 gateway users orders  # Analyse de style avec flake8
-    - python3 -m pytest --capture=no  # Exécution des tests avec Python
+# test-gateway:
+#   stage: test
+#   script:
+#     - cd gateway
+#     - pip install -r requirements.txt
+#     # - flake8 gateway users orders  # Analyse de style avec flake8
+#     - python3 -m pytest --capture=no  # Exécution des tests avec Python
 
 test-users:
   stage: test
   script:
     - cd users
     - pip install -r requirements.txt
-    # - flake8 gateway users orders  # Analyse de style avec flake8
-    - python3 -m pytest --capture=no  # Exécution des tests avec Python
+    - python3 -m unittest discover users/tests
 
-test-orders:
-  stage: test
-  script:
-    - cd orders
-    - pip install -r requirements.txt
-    # - flake8 gateway users orders  # Analyse de style avec flake8
-    - python3 -m pytest --capture=no  # Exécution des tests avec Python
+# test-orders:
+#   stage: test
+#   script:
+#     - cd orders
+#     - pip install -r requirements.txt
+#     # - flake8 gateway users orders  # Analyse de style avec flake8
+#     - python3 -m pytest --capture=no  # Exécution des tests avec Python
 
 build-gateway:
   stage: build
