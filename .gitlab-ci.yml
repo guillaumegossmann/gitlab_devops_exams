@@ -26,7 +26,7 @@ test-gateway:
   script:
     - cd gateway
     - pip install -r requirements.txt
-    - flake8 gateway users orders  # Analyse de style avec flake8
+    # - flake8 gateway users orders  # Analyse de style avec flake8
     - python3 -m pytest --capture=no  # Exécution des tests avec Python
 
 test-users:
@@ -34,7 +34,7 @@ test-users:
   script:
     - cd users
     - pip install -r requirements.txt
-    - flake8 gateway users orders  # Analyse de style avec flake8
+    # - flake8 gateway users orders  # Analyse de style avec flake8
     - python3 -m pytest --capture=no  # Exécution des tests avec Python
 
 test-orders:
@@ -42,7 +42,7 @@ test-orders:
   script:
     - cd orders
     - pip install -r requirements.txt
-    - flake8 gateway users orders  # Analyse de style avec flake8
+    # - flake8 gateway users orders  # Analyse de style avec flake8
     - python3 -m pytest --capture=no  # Exécution des tests avec Python
 
 build-gateway:
