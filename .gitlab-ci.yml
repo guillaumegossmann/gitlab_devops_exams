@@ -131,7 +131,7 @@ deploy-dev:
     name: $NAMESPACE-$CI_BUILD_REF_NAME
     url: http://$IP_VM:$NODEPORT_DEV
     on_stop: stop-dev
-  stage: deploy-$NAMESPACE
+  stage: deploy-dev
   services:
     - docker:dind
   script:
@@ -148,7 +148,7 @@ deploy-qa:
     name: $NAMESPACE-$CI_BUILD_REF_NAME
     url: http://$IP_VM:$NODEPORT_QA
     on_stop: stop-qa
-  stage: deploy-$NAMESPACE
+  stage: deploy-qa
   services:
     - docker:dind
   script:
@@ -165,7 +165,7 @@ deploy-staging:
     name: $NAMESPACE-$CI_BUILD_REF_NAME
     url: http://$IP_VM:$NODEPORT_STAGING
     on_stop: stop-staging
-  stage: deploy-$NAMESPACE
+  stage: deploy-staging
   services:
     - docker:dind
   script:
@@ -181,7 +181,7 @@ deploy-prod:
   environment:
     name: $NAMESPACE-$CI_BUILD_REF_NAME
     url: http://$IP_VM:$NODEPORT_PROD
-  stage: deploy-$NAMESPACE
+  stage: deploy-prod
   when: manual
   only:
     - main
