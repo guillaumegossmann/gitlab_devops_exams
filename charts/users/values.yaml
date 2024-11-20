@@ -1,0 +1,17 @@
+replicaCount: 2
+image:
+  repository: ${CI_REGISTRY_IMAGE}/users
+  tag: latest
+  pullPolicy: Always
+  
+imagePullSecrets:
+  - name: regcred
+
+service:
+  type: ClusterIP
+  port: 8000
+
+env:
+  USERS_SERVICE_URL: http://users-service:8000
+  ORDERS_SERVICE_URL: http://orders-service:8000
+  LOG_LEVEL: INFO

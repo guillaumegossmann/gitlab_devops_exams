@@ -1,0 +1,6 @@
+Chart.yaml:
+apiVersion: v2
+name: users
+description: Helm chart for API users
+version: 0.1.0
+appVersion: "1.0.0"
