@@ -14,8 +14,8 @@ image:
   entrypoint: ["/bin/sh", "-c"]
 
 stages:
-  - build
   - test
+  - build
   - deploy-dev
   - deploy-qa
   - deploy-staging
@@ -26,21 +26,21 @@ test-gateway:
   script:
     - cd gateway
     - pip install -r requirements.txt
-    - python3 -m pytest tests/
+    - python3 -m pytest
 
 test-users:
   stage: test
   script:
     - cd users
     - pip install -r requirements.txt
-    - python3 -m pytest tests/
+    - python3 -m pytest
 
 test-orders:
   stage: test
   script:
     - cd orders
     - pip install -r requirements.txt
-    - python3 -m pytest tests/
+    - python3 -m pytest
 
 build-gateway:
   stage: build
