@@ -34,7 +34,7 @@ test-users:
   script:
     - cd users
     - pip install -r requirements.txt
-    - python3 -m pytest
+    - python3 -m unittest discover tests/
 
 # test-orders:
 #   stage: test
