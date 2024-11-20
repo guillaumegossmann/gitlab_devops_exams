@@ -26,21 +26,24 @@ test-gateway:
   script:
     - cd gateway
     - pip install -r requirements.txt
-    - python3 -m pytest
+    - flake8 gateway users orders  # Analyse de style avec flake8
+    - python3 -m pytest --capture=no  # Exécution des tests avec Python
 
 test-users:
   stage: test
   script:
     - cd users
     - pip install -r requirements.txt
-    - python3 -m pytest
+    - flake8 gateway users orders  # Analyse de style avec flake8
+    - python3 -m pytest --capture=no  # Exécution des tests avec Python
 
 test-orders:
   stage: test
   script:
     - cd orders
     - pip install -r requirements.txt
-    - python3 -m pytest
+    - flake8 gateway users orders  # Analyse de style avec flake8
+    - python3 -m pytest --capture=no  # Exécution des tests avec Python
 
 build-gateway:
   stage: build
