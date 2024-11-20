@@ -210,4 +210,3 @@ deploy-prod:
     - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE
     - helm upgrade --install users ./charts/users -n $NAMESPACE
     - helm upgrade --install orders ./charts/orders -n $NAMESPACE
-    
