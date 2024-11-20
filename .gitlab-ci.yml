@@ -78,8 +78,8 @@ build-orders:
     - docker build -t $ORDERS_IMAGE:$CI_COMMIT_SHORT_SHA .
     - docker push $ORDERS_IMAGE:$CI_COMMIT_SHORT_SHA
 
-stop_dev:
-  stage: deploy_dev
+stop-dev:
+  stage: deploy-dev
   variables:
     NAMESPACE: dev
   when: manual
@@ -93,8 +93,8 @@ stop_dev:
     - sudo helm uninstall users -n $NAMESPACE
     - sudo helm uninstall gateway -n $NAMESPACE
 
-stop_qa:
-  stage: deploy_qa
+stop-qa:
+  stage: deploy-qa
   variables:
     NAMESPACE: qa
   when: manual
@@ -108,8 +108,8 @@ stop_qa:
     - sudo helm uninstall users -n $NAMESPACE
     - sudo helm uninstall gateway -n $NAMESPACE
 
-stop_staging:
-  stage: deploy_staging
+stop-staging:
+  stage: deploy-staging
   variables:
     NAMESPACE: staging
   when: manual
@@ -130,7 +130,7 @@ deploy-dev:
   environment:
     name: $NAMESPACE-$CI_BUILD_REF_NAME
     url: http://$IP_VM:$NODEPORT_DEV
-    on_stop: stop_dev
+    on_stop: stop-dev
   stage: deploy-$NAMESPACE
   services:
     - docker:dind
@@ -147,7 +147,7 @@ deploy-qa:
   environment:
     name: $NAMESPACE-$CI_BUILD_REF_NAME
     url: http://$IP_VM:$NODEPORT_QA
-    on_stop: stop_qa
+    on_stop: stop-qa
   stage: deploy-$NAMESPACE
   services:
     - docker:dind
@@ -164,7 +164,7 @@ deploy-staging:
   environment:
     name: $NAMESPACE-$CI_BUILD_REF_NAME
     url: http://$IP_VM:$NODEPORT_STAGING
-    on_stop: stop_staging
+    on_stop: stop-staging
   stage: deploy-$NAMESPACE
   services:
     - docker:dind
