@@ -137,7 +137,11 @@ deploy-dev:
   services:
     - docker:dind
   script:
-    - kubectl config use-context $NAMESPACE
+    - rm -Rf ~/.kube
+    - mkdir ~/.kube/
+    - ls
+    - cat $KUBE_CONFIG > ~/.kube/config
+    - kubectl config view --raw >~/.kube/config
     - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE
     - helm upgrade --install users ./charts/users -n $NAMESPACE
     - helm upgrade --install orders ./charts/orders -n $NAMESPACE
@@ -154,7 +158,11 @@ deploy-qa:
   services:
     - docker:dind
   script:
-    - kubectl config use-context $NAMESPACE
+    - rm -Rf ~/.kube
+    - mkdir ~/.kube/
+    - ls
+    - cat $KUBE_CONFIG > ~/.kube/config
+    - kubectl config view --raw >~/.kube/config
     - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE
     - helm upgrade --install users ./charts/users -n $NAMESPACE
     - helm upgrade --install orders ./charts/orders -n $NAMESPACE
@@ -171,7 +179,11 @@ deploy-staging:
   services:
     - docker:dind
   script:
-    - kubectl config use-context $NAMESPACE
+    - rm -Rf ~/.kube
+    - mkdir ~/.kube/
+    - ls
+    - cat $KUBE_CONFIG > ~/.kube/config
+    - kubectl config view --raw >~/.kube/config
     - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE
     - helm upgrade --install users ./charts/users -n $NAMESPACE
     - helm upgrade --install orders ./charts/orders -n $NAMESPACE
@@ -190,7 +202,11 @@ deploy-prod:
   services:
     - docker:dind
   script:
-    - kubectl config use-context $NAMESPACE
+    - rm -Rf ~/.kube
+    - mkdir ~/.kube/
+    - ls
+    - cat $KUBE_CONFIG > ~/.kube/config
+    - kubectl config view --raw >~/.kube/config
     - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE
     - helm upgrade --install users ./charts/users -n $NAMESPACE
     - helm upgrade --install orders ./charts/orders -n $NAMESPACE
