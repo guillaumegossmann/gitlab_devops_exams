@@ -139,6 +139,8 @@ deploy-dev:
   script:
     - echo "$KUBE_CONFIG"
     - cat "$KUBE_CONFIG"
+    - echo "$KUBECONFIG"
+    - cat "$KUBECONFIG"
     - echo "$NAMESPACE"
     - echo "$CI_BUILD_REF_NAME"
     # - kubectl get nodes  # Vérification de la connectivité au cluster
@@ -151,15 +153,15 @@ deploy-dev:
     - cat $KUBE_CONFIG > $KUBECONFIG
     - kubectl config view --raw # Débuggage
     # - kubectl config view --raw >~/.kube/config
-    - curl -k https://127.0.0.1:6443
-    - kubectl get pods
+    - curl -k https://127.0.0.1:6443 # Débuggage
+    - kubectl get pods -n $NAMESPACE # Débuggage
     - chmod 600 /home/gitlab-runner/builds/t3_zZzCth/0/guillaume.gmn/gitlab_devops_exams.tmp/KUBECONFIG
     - cp ./charts/gateway/values.yaml values-gateway.yml
-    - cat values-gateway.yml
+    - cat values-gateway.yml # Débuggage
     - cp ./charts/users/values.yaml values-users.yml
-    - cat values-users.yml
+    - cat values-users.yml # Débuggage
     - cp ./charts/orders/values.yaml values-orders.yml
-    - cat values-orders.yml
+    - cat values-orders.yml # Débuggage
     - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-gateway.yml --set image.repository="$CI_REGISTRY_IMAGE/gateway" --set service.nodeport="$NODEPORT_DEV"
     - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-users.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_DEV"
     - helm upgrade --install orders ./charts/orders -n $NAMESPACE --values=values-orders.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_DEV"
