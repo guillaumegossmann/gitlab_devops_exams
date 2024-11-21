@@ -142,11 +142,11 @@ deploy-dev:
     - ls
     - cat $KUBE_CONFIG > ~/.kube/config
     - kubectl config view --raw >~/.kube/config
-    - cp gateway/values.yaml values-gateway.yml
+    - cp ./charts/gateway/values.yaml values-gateway.yml
     - cat values-gateway.yml
-    - cp users/values.yaml values-users.yml
+    - cp ./charts/users/values.yaml values-users.yml
     - cat values-users.yml
-    - cp orders/values.yaml values-orders.yml
+    - cp ./charts/orders/values.yaml values-orders.yml
     - cat values-orders.yml
     - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-gateway.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_DEV"
     - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-users.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_DEV"
