@@ -142,13 +142,16 @@ deploy-dev:
     - echo "$NAMESPACE"
     - echo "$CI_BUILD_REF_NAME"
     - chmod 600 ~/.kube/config  # Restreindre les permissions
-    - kubectl config view --raw > ~/.kube/config
+    - chmod 600 $KUBE_CONFIG  # Restreindre les permissions
     - curl -k https://127.0.0.1:6443
     # - kubectl get nodes  # Vérification de la connectivité au cluster
     - rm -Rf ~/.kube
     - mkdir ~/.kube/
     - ls
     - cat $KUBE_CONFIG > ~/.kube/config
+    - kubectl config view --raw
+    - cat $KUBE_CONFIG > $KUBECONFIG
+    - kubectl config view --raw
     # - echo "$KUBE_CONFIG" > ~/.kube/config
     - kubectl config view --raw >~/.kube/config
     - cp ./charts/gateway/values.yaml values-gateway.yml
