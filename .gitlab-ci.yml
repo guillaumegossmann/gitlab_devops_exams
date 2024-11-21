@@ -4,10 +4,18 @@ variables:
   USERS_IMAGE: $CI_REGISTRY_IMAGE/users
   ORDERS_IMAGE: $CI_REGISTRY_IMAGE/orders
   IP_VM: 127.0.0.1
-  NODEPORT_DEV: 30000
-  NODEPORT_QA: 30001
-  NODEPORT_STAGING: 30002
-  NODEPORT_PROD: 30003
+  NODEPORT_DEV_GATEWAY: 30000
+  NODEPORT_QA_GATEWAY: 30001
+  NODEPORT_STAGING_GATEWAY: 30002
+  NODEPORT_PROD_GATEWAY: 30003
+  NODEPORT_DEV_USERS: 30010
+  NODEPORT_QA_USERS: 30011
+  NODEPORT_STAGING_USERS: 30012
+  NODEPORT_PROD_USERS: 30013
+  NODEPORT_DEV_ORDERS: 30020
+  NODEPORT_QA_ORDERS: 30021
+  NODEPORT_STAGING_ORDERS: 30022
+  NODEPORT_PROD_ORDERS: 30023
   
 image:
   name: "python:3.11-alpine"
@@ -162,9 +170,9 @@ deploy-dev:
     - cat values-users.yml # Débuggage
     - cp ./charts/orders/values.yaml values-orders.yml
     - cat values-orders.yml # Débuggage
-    - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-gateway.yml --set image.repository="$CI_REGISTRY_IMAGE/gateway" --set service.nodeport="$NODEPORT_DEV"
-    - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-users.yml --set image.repository="$CI_REGISTRY_IMAGE/users" --set service.nodeport="$NODEPORT_DEV"
-    - helm upgrade --install orders ./charts/orders -n $NAMESPACE --values=values-orders.yml --set image.repository="$CI_REGISTRY_IMAGE/orders" --set service.nodeport="$NODEPORT_DEV"
+    - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-gateway.yml --set image.repository="$CI_REGISTRY_IMAGE/gateway" --set service.nodeport="$NODEPORT_DEV_GATEWAY"
+    - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-users.yml --set image.repository="$CI_REGISTRY_IMAGE/users" --set service.nodeport="$NODEPORT_DEV_USERS"
+    - helm upgrade --install orders ./charts/orders -n $NAMESPACE --values=values-orders.yml --set image.repository="$CI_REGISTRY_IMAGE/orders" --set service.nodeport="$NODEPORT_DEV_ORDERS"
     
 deploy-qa:
   image: docker:latest
@@ -185,9 +193,9 @@ deploy-qa:
     - kubectl config view --raw >~/.kube/config
     - cp qa/values.yaml values-qa.yml
     - cat values-qa.yml
-    - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-qa.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_QA"
-    - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-qa.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_QA"
-    - helm upgrade --install orders ./charts/orders -n $NAMESPACE --values=values-qa.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_QA"
+    - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-qa.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_QA_GATEWAY"
+    - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-qa.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_QA_USERS"
+    - helm upgrade --install orders ./charts/orders -n $NAMESPACE --values=values-qa.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_QA_ORDERS"
 
 deploy-staging:
   image: docker:latest
@@ -208,9 +216,9 @@ deploy-staging:
     - kubectl config view --raw >~/.kube/config
     - cp staging/values.yaml values-staging.yml
     - cat values-staging.yml
-    - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-staging.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_STAGING"
-    - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-staging.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_STAGING"
-    - helm upgrade --install orders ./charts/orders -n $NAMESPACE --values=values-staging.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_STAGING"
+    - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-staging.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_STAGING_GATEWAY"
+    - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-staging.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_STAGING_USERS"
+    - helm upgrade --install orders ./charts/orders -n $NAMESPACE --values=values-staging.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_STAGING_ORDERS"
 
 deploy-prod:
   image: docker:latest
@@ -231,8 +239,8 @@ deploy-prod:
     - ls
     - cat $KUBE_CONFIG > ~/.kube/config
     - kubectl config view --raw >~/.kube/config
-    - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_PROD"
-    - helm upgrade --install users ./charts/users -n $NAMESPACE --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_PROD"
-    - helm upgrade --install orders ./charts/orders -n $NAMESPACE --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_PROD"
+    - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_PROD_GATEWAY"
+    - helm upgrade --install users ./charts/users -n $NAMESPACE --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_PROD_USERS"
+    - helm upgrade --install orders ./charts/orders -n $NAMESPACE --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_PROD_ORDERS"
 
     
