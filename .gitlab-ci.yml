@@ -3,7 +3,7 @@ variables:
   GATEWAY_IMAGE: $CI_REGISTRY_IMAGE/gateway
   USERS_IMAGE: $CI_REGISTRY_IMAGE/users
   ORDERS_IMAGE: $CI_REGISTRY_IMAGE/orders
-  IP_VM: 3.249.81.214
+  IP_VM: 127.0.0.1
   NODEPORT_DEV: 30000
   NODEPORT_QA: 30001
   NODEPORT_STAGING: 30002
@@ -151,7 +151,8 @@ deploy-dev:
     - cat $KUBE_CONFIG > $KUBECONFIG
     - kubectl config view --raw # Débuggage
     # - kubectl config view --raw >~/.kube/config
-    - curl -k https://3.249.81.214:6443
+    - curl -k https://127.0.0.1:6443
+    - kubectl get pods
     - chmod 600 /home/gitlab-runner/builds/t3_zZzCth/0/guillaume.gmn/gitlab_devops_exams.tmp/KUBECONFIG
     - cp ./charts/gateway/values.yaml values-gateway.yml
     - cat values-gateway.yml
