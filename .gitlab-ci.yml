@@ -140,10 +140,14 @@ deploy-dev:
     - echo "$KUBE_CONFIG"
     - echo "$NAMESPACE"
     - echo "$CI_BUILD_REF_NAME"
+    - chmod 600 ~/.kube/config  # Restreindre les permissions
+    - kubectl config view --raw > ~/.kube/config
+    - kubectl get nodes  # Vérification de la connectivité au cluster
     - rm -Rf ~/.kube
     - mkdir ~/.kube/
     - ls
-    - cat $KUBE_CONFIG > ~/.kube/config
+    # - cat $KUBE_CONFIG > ~/.kube/config
+    - echo "$KUBE_CONFIG" > ~/.kube/config
     - kubectl config view --raw >~/.kube/config
     - cp ./charts/gateway/values.yaml values-gateway.yml
     - cat values-gateway.yml
@@ -154,7 +158,6 @@ deploy-dev:
     - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-gateway.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_DEV"
     - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-users.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_DEV"
     - helm upgrade --install orders ./charts/orders -n $NAMESPACE --values=values-orders.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_DEV"
-    
     
 deploy-qa:
   image: docker:latest
