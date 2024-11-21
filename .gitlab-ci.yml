@@ -141,19 +141,17 @@ deploy-dev:
     - cat "$KUBE_CONFIG"
     - echo "$NAMESPACE"
     - echo "$CI_BUILD_REF_NAME"
-    - chmod 600 ~/.kube/config  # Restreindre les permissions
-    - chmod 600 $KUBE_CONFIG  # Restreindre les permissions
-    - curl -k https://127.0.0.1:6443
     # - kubectl get nodes  # Vérification de la connectivité au cluster
     - rm -Rf ~/.kube
     - mkdir ~/.kube/
     - ls
     - cat $KUBE_CONFIG > ~/.kube/config
-    - kubectl config view --raw
-    - cat $KUBE_CONFIG > $KUBECONFIG
-    - kubectl config view --raw
-    # - echo "$KUBE_CONFIG" > ~/.kube/config
-    - kubectl config view --raw >~/.kube/config
+    - kubectl config view --raw # Vérification
+    # - cat $KUBE_CONFIG > $KUBECONFIG
+    # - kubectl config view --raw # Vérification
+    # - kubectl config view --raw >~/.kube/config
+    - curl -k https://127.0.0.1:6443
+    - chmod 600 /home/gitlab-runner/builds/t3_zZzCth/0/guillaume.gmn/gitlab_devops_exams.tmp/KUBECONFIG
     - cp ./charts/gateway/values.yaml values-gateway.yml
     - cat values-gateway.yml
     - cp ./charts/users/values.yaml values-users.yml
