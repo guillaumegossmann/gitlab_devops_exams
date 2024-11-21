@@ -137,6 +137,9 @@ deploy-dev:
   services:
     - docker:dind
   script:
+    - echo "$KUBE_CONFIG"
+    - echo $NAMESPACE"
+    - echo "$CI_BUILD_REF_NAME"
     - rm -Rf ~/.kube
     - mkdir ~/.kube/
     - ls
