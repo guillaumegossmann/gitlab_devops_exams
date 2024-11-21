@@ -3,7 +3,7 @@ variables:
   GATEWAY_IMAGE: $CI_REGISTRY_IMAGE/gateway
   USERS_IMAGE: $CI_REGISTRY_IMAGE/users
   ORDERS_IMAGE: $CI_REGISTRY_IMAGE/orders
-  IP_VM: 52.212.153.2
+  IP_VM: 127.0.0.1
   NODEPORT_DEV: 30000
   NODEPORT_QA: 30001
   NODEPORT_STAGING: 30002
@@ -143,7 +143,7 @@ deploy-dev:
     - echo "$CI_BUILD_REF_NAME"
     - chmod 600 ~/.kube/config  # Restreindre les permissions
     - kubectl config view --raw > ~/.kube/config
-    - curl -k https://52.212.153.2:6443
+    - curl -k https://127.0.0.1:6443
     # - kubectl get nodes  # Vérification de la connectivité au cluster
     - rm -Rf ~/.kube
     - mkdir ~/.kube/
