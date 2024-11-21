@@ -1,17 +1,47 @@
-replicaCount: 2
+replicaCount: 1
+
 image:
-  repository: ${CI_REGISTRY_IMAGE}/orders
-  tag: latest
+  repository: nginx
   pullPolicy: Always
-  
+  tag: ""
+
 imagePullSecrets:
-  - name: regcred
+  - name: regcred # Add image pull secret to pull kubernetes image from gitlab private registry
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
 
 service:
-  type: ClusterIP
-  port: 8000
+  type: NodePort
+  port: 80
 
-env:
-  USERS_SERVICE_URL: http://users-service:8000
-  ORDERS_SERVICE_URL: http://orders-service:8000
-  LOG_LEVEL: INFO
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources: {}
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+nodeSelector: {}
+tolerations: []
+affinity: {}

@@ -137,12 +137,12 @@ deploy-dev:
   services:
     - docker:dind
   script:
-    - echo "$KUBE_CONFIG"
-    - cat "$KUBE_CONFIG"
-    - echo "$KUBECONFIG"
-    - cat "$KUBECONFIG"
-    - echo "$NAMESPACE"
-    - echo "$CI_BUILD_REF_NAME"
+    - echo "$KUBE_CONFIG" # Débuggage
+    - cat "$KUBE_CONFIG" # Débuggage
+    - echo "$KUBECONFIG" # Débuggage
+    - cat "$KUBECONFIG" # Débuggage
+    - echo "$NAMESPACE" # Débuggage
+    - echo "$CI_BUILD_REF_NAME" # Débuggage
     # - kubectl get nodes  # Vérification de la connectivité au cluster
     - rm -Rf ~/.kube
     - mkdir ~/.kube/
