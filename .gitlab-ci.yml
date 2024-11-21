@@ -143,7 +143,7 @@ deploy-dev:
     - echo "$CI_BUILD_REF_NAME"
     - chmod 600 ~/.kube/config  # Restreindre les permissions
     - kubectl config view --raw > ~/.kube/config
-    - curl -k https://54.78.45.227:6443
+    - curl -k https://54.74.14.220:6443
     - kubectl get nodes  # Vérification de la connectivité au cluster
     - rm -Rf ~/.kube
     - mkdir ~/.kube/
