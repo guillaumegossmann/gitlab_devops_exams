@@ -145,10 +145,11 @@ deploy-dev:
     - rm -Rf ~/.kube
     - mkdir ~/.kube/
     - ls
+    - kubectl config view --raw # Débuggage
     - cat $KUBE_CONFIG > ~/.kube/config
-    - kubectl config view --raw # Vérification
-    # - cat $KUBE_CONFIG > $KUBECONFIG
-    # - kubectl config view --raw # Vérification
+    - kubectl config view --raw # Débuggage
+    - cat $KUBE_CONFIG > $KUBECONFIG
+    - kubectl config view --raw # Débuggage
     # - kubectl config view --raw >~/.kube/config
     - curl -k https://127.0.0.1:6443
     - chmod 600 /home/gitlab-runner/builds/t3_zZzCth/0/guillaume.gmn/gitlab_devops_exams.tmp/KUBECONFIG
