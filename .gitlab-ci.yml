@@ -133,15 +133,7 @@ stop-staging:
     - sudo helm uninstall users -n $NAMESPACE
     - sudo helm uninstall gateway -n $NAMESPACE
 
-deploy-dev:
-  image: docker:latest
-  variables:
-    NAMESPACE: dev
-  environment:
-    name: $NAMESPACE-$CI_BUILD_REF_NAME
-    url: http://$IP_VM:$NODEPORT_DEV
-    on_stop: stop-dev
-  stage: deploy-dev
+.do_testing:
   services:
     - docker:dind
   script:
@@ -173,6 +165,18 @@ deploy-dev:
     - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-gateway.yml --set image.repository="$CI_REGISTRY_IMAGE/gateway" --set service.nodeport="$NODEPORT_DEV_GATEWAY"
     - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-users.yml --set image.repository="$CI_REGISTRY_IMAGE/users" --set service.nodeport="$NODEPORT_DEV_USERS"
     - helm upgrade --install orders ./charts/orders -n $NAMESPACE --values=values-orders.yml --set image.repository="$CI_REGISTRY_IMAGE/orders" --set service.nodeport="$NODEPORT_DEV_ORDERS"
+
+
+deploy-dev:
+  image: docker:latest
+  variables:
+    NAMESPACE: dev
+  environment:
+    name: $NAMESPACE-$CI_BUILD_REF_NAME
+    url: http://$IP_VM:$NODEPORT_DEV
+    on_stop: stop-dev
+  stage: deploy-dev
+  extends: .do_testing
     
 deploy-qa:
   image: docker:latest
@@ -183,19 +187,7 @@ deploy-qa:
     url: http://$IP_VM:$NODEPORT_QA
     on_stop: stop-qa
   stage: deploy-qa
-  services:
-    - docker:dind
-  script:
-    - rm -Rf ~/.kube
-    - mkdir ~/.kube/
-    - ls
-    - cat $KUBE_CONFIG > ~/.kube/config
-    - kubectl config view --raw >~/.kube/config
-    - cp qa/values.yaml values-qa.yml
-    - cat values-qa.yml
-    - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-qa.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_QA_GATEWAY"
-    - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-qa.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_QA_USERS"
-    - helm upgrade --install orders ./charts/orders -n $NAMESPACE --values=values-qa.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_QA_ORDERS"
+  extends: .do_testing
 
 deploy-staging:
   image: docker:latest
@@ -206,19 +198,7 @@ deploy-staging:
     url: http://$IP_VM:$NODEPORT_STAGING
     on_stop: stop-staging
   stage: deploy-staging
-  services:
-    - docker:dind
-  script:
-    - rm -Rf ~/.kube
-    - mkdir ~/.kube/
-    - ls
-    - cat $KUBE_CONFIG > ~/.kube/config
-    - kubectl config view --raw >~/.kube/config
-    - cp staging/values.yaml values-staging.yml
-    - cat values-staging.yml
-    - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --values=values-staging.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_STAGING_GATEWAY"
-    - helm upgrade --install users ./charts/users -n $NAMESPACE --values=values-staging.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_STAGING_USERS"
-    - helm upgrade --install orders ./charts/orders -n $NAMESPACE --values=values-staging.yml --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_STAGING_ORDERS"
+  extends: .do_testing
 
 deploy-prod:
   image: docker:latest
@@ -231,16 +211,5 @@ deploy-prod:
   when: manual
   only:
     - main
-  services:
-    - docker:dind
-  script:
-    - rm -Rf ~/.kube
-    - mkdir ~/.kube/
-    - ls
-    - cat $KUBE_CONFIG > ~/.kube/config
-    - kubectl config view --raw >~/.kube/config
-    - helm upgrade --install gateway ./charts/gateway -n $NAMESPACE --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_PROD_GATEWAY"
-    - helm upgrade --install users ./charts/users -n $NAMESPACE --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_PROD_USERS"
-    - helm upgrade --install orders ./charts/orders -n $NAMESPACE --set image.repository="$CI_REGISTRY_IMAGE" --set service.nodeport="$NODEPORT_PROD_ORDERS"
-
+  extends: .do_testing
     
