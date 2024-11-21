@@ -138,6 +138,7 @@ deploy-dev:
     - docker:dind
   script:
     - echo "$KUBE_CONFIG"
+    - cat "$KUBE_CONFIG"
     - echo "$NAMESPACE"
     - echo "$CI_BUILD_REF_NAME"
     - chmod 600 ~/.kube/config  # Restreindre les permissions
@@ -146,8 +147,8 @@ deploy-dev:
     - rm -Rf ~/.kube
     - mkdir ~/.kube/
     - ls
-    # - cat $KUBE_CONFIG > ~/.kube/config
-    - echo "$KUBE_CONFIG" > ~/.kube/config
+    - cat $KUBE_CONFIG > ~/.kube/config
+    # - echo "$KUBE_CONFIG" > ~/.kube/config
     - kubectl config view --raw >~/.kube/config
     - cp ./charts/gateway/values.yaml values-gateway.yml
     - cat values-gateway.yml
