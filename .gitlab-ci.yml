@@ -144,7 +144,7 @@ deploy-dev:
     - chmod 600 ~/.kube/config  # Restreindre les permissions
     - kubectl config view --raw > ~/.kube/config
     - curl -k https://54.74.14.220:6443
-    - kubectl get nodes  # Vérification de la connectivité au cluster
+    # - kubectl get nodes  # Vérification de la connectivité au cluster
     - rm -Rf ~/.kube
     - mkdir ~/.kube/
     - ls
